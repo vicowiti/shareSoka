@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import {
   ClientToServerEvents,
@@ -20,10 +21,18 @@ const SelectRoomPage = ({
   setRoom,
   setUsername,
 }: SelectRoomPageProps) => {
+  const navigate = useNavigate();
+
+  function joinRoom() {
+    if (username && room) {
+      socket.emit("join_room", { username, room });
+      navigate("/chat", { replace: true });
+    }
+  }
   return (
     <div>
       <h1>SHARESOKA</h1>
-      <form>
+      <form onSubmit={joinRoom}>
         <div>
           <input
             type="text"

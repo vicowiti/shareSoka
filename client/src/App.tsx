@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import SelectRoomPage from "./components/SelectRoomPage";
 import { io, Socket } from "socket.io-client";
@@ -7,6 +7,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./types/socketClientTypes";
+import Chat from "./components/Chat";
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   "http://localhost:4000"
@@ -15,12 +16,6 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
 function App() {
   const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
-
-  function joinRoom() {
-    if (username && room) {
-      socket.emit("join_room", { username, room });
-    }
-  }
 
   return (
     <BrowserRouter>
@@ -38,7 +33,7 @@ function App() {
             />
           }
         />
-        {/* <Route path="/" element={} /> */}
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );
